@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">Crypto Exchange</string>
+    <string name="action_settings">Exit</string>
+    <string name="crypto_symbol">Crypto Symbol</string>
+    <string name="to_currency_symbol">World Currency Symbol</string>
+    <string name="crypto_cuurency_rate">Crypto Currency Rate</string>
+    <string name="world_currency_rate">World Currency Rate</string>
+    <string name="world_cuurency_prompt">World Currency</string>
+    <string name="crypto_cuurency_prompt">Crypto Currency</string>
+    <string name="btn_convert_to">World -> Digital</string>
+    <string name="btn_convert_from">Digital -> World</string>
+    <string name="exchange_rate_convert">Exchange Conversion</string>
+    <string name="btn_create_card">Create</string>
+    <string name="create_card_bar">Create Exchange Card</string>
+    <string name="empty_cards_msg">No exchange card!</string>
+
+
+    <string-array name="world_currencies">
+        <item></item>
+        <item>NGN</item>
+        <item>USD</item>
+        <item>GBP</item>
+        <item>EUR</item>
+        <item>JPY</item>
+        <item>AED</item>
+        <item>CHF</item>
+        <item>CAD</item>
+        <item>AUD</item>
+        <item>HKD</item>
+        <item>CNY</item>
+        <item>ZAR</item>
+        <item>INR</item>
+        <item>NZD</item>
+        <item>RUB</item>
+        <item>TRY</item>
+        <item>MYR</item>
+        <item>CZK</item>
+        <item>ILS</item>
+        <item>SGD</item>
+    </string-array>
+
+    <string-array name="crypto_currencies">
+        <item></item>
+        <item>BTC</item>
+        <item>ETH</item>
+    </string-array>
+
+    <string name="value_to_convert">Enter value</string>
+
+</resources>

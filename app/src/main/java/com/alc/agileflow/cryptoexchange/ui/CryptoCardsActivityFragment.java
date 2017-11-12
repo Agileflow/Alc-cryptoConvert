@@ -2,9 +2,11 @@ package com.alc.agileflow.cryptoexchange.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -17,6 +19,8 @@ import android.widget.TextView;
 
 import com.alc.agileflow.cryptoexchange.R;
 import com.alc.agileflow.cryptoexchange.remote.models.CurrencyExchange;
+import com.alc.agileflow.cryptoexchange.remote.models.ResponseData;
+import com.alc.agileflow.cryptoexchange.service.CryptoCompareService;
 import com.alc.agileflow.cryptoexchange.ui.createcard.CreateExchangeCardActivity;
 import com.alc.agileflow.cryptoexchange.ui.exchangerconverter.ExchangeRateConvertActivity;
 import com.alc.agileflow.cryptoexchange.utils.Currencies;
@@ -38,6 +42,8 @@ public class CryptoCardsActivityFragment extends Fragment implements CrytoCardsC
 
     public static final String CURRENCY_EXCHANGE = "currencyexchange";
 
+    public static Map<String, Map<String, CurrencyExchange>> rates = new HashMap<>();
+
     @BindView(R.id.rv_exchange_cards)
     RecyclerView exchangeCardsRecyclerView;
 
@@ -46,6 +52,8 @@ public class CryptoCardsActivityFragment extends Fragment implements CrytoCardsC
     CurrencyExchangeAdapter currencyExchangeAdapter;
 
     CrytoCardsContract.UserActionListener actionListener;
+
+    private int index = 0;
 
     // Mandatory empty constructor for the fragment manager to instantiate the fragment
     public CryptoCardsActivityFragment() {
@@ -59,8 +67,46 @@ public class CryptoCardsActivityFragment extends Fragment implements CrytoCardsC
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        currencyExchangeAdapter = new CurrencyExchangeAdapter(new HashMap<String, CurrencyExchange>(),exchangeItemClickedListener, Currencies.BITCOIN);
+        //String from = Currencies.BITCOIN + "," + Currencies.ETHEREUM;
+
+        //this.rates = new HashMap<>();
+
+        currencyExchangeAdapter = new CurrencyExchangeAdapter(exchangeItemClickedListener);
+
         actionListener = new CryptoCardsPresenter(this);
+
+        //new GetRatesTask().execute(from, Currencies.toCurrencies);
+        getExchangeRates();
+    }
+
+
+//    private void getRates(String from, String to){
+//        if(checkNetworkConnection()){
+//            CryptoCompareService.getExchangeRate(from,to,listener);
+//        }
+//        else
+//            showErrorMessage( "Check Internet Connectivity!");
+//    }
+//
+//    class GetRatesTask extends AsyncTask{
+//
+//        @Override
+//        protected Object doInBackground(Object[] objects) {
+//            getRates(objects[0].toString(), objects[1].toString());
+//            return null;
+//        }
+//    }
+
+    private void getExchangeRates() {
+        String from = Currencies.BITCOIN + "," + Currencies.ETHEREUM;
+
+        actionListener.getExchangeData(from, Currencies.toCurrencies);
+    }
+
+    private CurrencyExchange getCurrencyExchange(String from, String to){
+        if(!this.rates.isEmpty())
+            return this.rates.get(from).get(to);
+        return null;
     }
 
     @Override
@@ -69,31 +115,56 @@ public class CryptoCardsActivityFragment extends Fragment implements CrytoCardsC
 
         noCard = getActivity().findViewById(R.id.no_exchange_card);
 
-        if(savedInstanceState != null){
-
-            // check if card(s) was saved before hiding message
-            //hideNoCard();
-        }
         View root = inflater.inflate(R.layout.fragment_crypto_cards, container, false);
         ButterKnife.bind(this,root);
 
         setupRecyclerView();
 
+
+        if(savedInstanceState != null){
+
+            // check if card(s) was saved before hiding message
+            hideNoCard();
+
+        }
+
         Intent intent = getActivity().getIntent();
         if(intent.hasExtra(CreateExchangeCardActivity.SELECTED)) {
             String selected[] = intent.getStringArrayExtra(CreateExchangeCardActivity.SELECTED);
 
-            actionListener.getExchangeCard(Currencies.BITCOIN + "," + Currencies.ETHEREUM, selected[1]+"," + Currencies.CANADIAN_DOLLA);
+            currencyExchangeAdapter.addCurrencyExchange(selected[0], updateAdapterData(selected));
+            this.index++;
         }
-
-
         return root;
+    }
+
+    public Map<Integer, CurrencyExchange> updateAdapterData(String[] selected){
+
+        Map<Integer, CurrencyExchange> temp = currencyExchangeAdapter.getAdapterData();
+        temp.put(this.index,getCurrencyExchange(selected[0],selected[1]));
+
+        return temp;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        SharedPreferences settings = getContext().getSharedPreferences(CURRENCY_EXCHANGE,0);
+        SharedPreferences.Editor editor = settings.edit();
+
+
+        // Commit the edits!
+        editor.commit();
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     private void setupRecyclerView() {
         exchangeCardsRecyclerView.setAdapter(currencyExchangeAdapter);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(SPAN_COUNT,StaggeredGridLayoutManager.VERTICAL);
         exchangeCardsRecyclerView.setLayoutManager(layoutManager);
+        exchangeCardsRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     @Override
@@ -108,13 +179,13 @@ public class CryptoCardsActivityFragment extends Fragment implements CrytoCardsC
 
     @Override
     public void showErrorMessage(String err) {
-        Log.i("CARDS --->>>>>>> ", err);
-        Helper.showToast(getContext(),err);
+        Helper.showToast(getContext(), err);
     }
 
     @Override
-    public void setExchangeCards(Map<String, CurrencyExchange> currencyExchanges) {
-        currencyExchangeAdapter.replaceData(currencyExchanges);
+    public void setExchangeRateData(String from, Map<String, CurrencyExchange> currencyExchanges) {
+        if(this.rates.size() < 2)
+            this.rates.put(from, currencyExchanges);
     }
 
     @Override
@@ -128,23 +199,37 @@ public class CryptoCardsActivityFragment extends Fragment implements CrytoCardsC
 
         @Override
         public void onExchangeItemClicked(CurrencyExchange currencyExchange) {
-            actionListener.showExchangeConverter(currencyExchange);
+            openExchangeConverter(currencyExchange);
+        }
+    };
+
+    private CryptoCompareService.OnCryptoExchangeRatesLoadedListener listener = new CryptoCompareService.OnCryptoExchangeRatesLoadedListener() {
+        @Override
+        public void onCryptoExchangeRatesLoaded(ResponseData.ExchangeDisplay cryptosRate) {
+            if (cryptosRate.getBTCRate().getCurrencyRate() != null)
+                setExchangeRateData(Currencies.BITCOIN, cryptosRate.getBTCRate().getCurrencyRate());
+            if (cryptosRate.getETHRate().getCurrencyRate() != null)
+                setExchangeRateData(Currencies.ETHEREUM, cryptosRate.getETHRate().getCurrencyRate());
+        }
+
+        @Override
+        public void onCryptoExchangeRatesLoadFailure(String err) {
+            showErrorMessage(err);
         }
     };
 
     static class CurrencyExchangeAdapter extends RecyclerView.Adapter<CurrencyExchangeAdapter.ViewHolder> {
-        private Map<String, CurrencyExchange> currencyExchanges;
+        private Map<Integer, CurrencyExchange> currencyExchanges;
         private OnExchangeItemClickedListener exchangeItemClickedListener;
         private String coinType;
 
-        CurrencyExchangeAdapter(Map<String, CurrencyExchange> currencyExchanges, OnExchangeItemClickedListener exchangeItemClickedListener, String coinType) {
-            this.currencyExchanges = currencyExchanges;
+        CurrencyExchangeAdapter(OnExchangeItemClickedListener exchangeItemClickedListener) {
+            this.currencyExchanges = new HashMap<>();
             this.exchangeItemClickedListener = exchangeItemClickedListener;
-            this.coinType = coinType;
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public CurrencyExchangeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             Context context = parent.getContext();
             LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -157,14 +242,12 @@ public class CryptoCardsActivityFragment extends Fragment implements CrytoCardsC
         public void onBindViewHolder(ViewHolder holder, int position) {
             CurrencyExchange currencyExchange = currencyExchanges.get(position);
 
-            if(coinType.equalsIgnoreCase(Currencies.BITCOIN)){
+            if(coinType.equalsIgnoreCase(Currencies.BITCOIN))
                 holder.fromSym.setBackgroundResource(R.color.holo_orange_light);
-            }else if(coinType.equalsIgnoreCase(Currencies.ETHEREUM)){
+            else if(coinType.equalsIgnoreCase(Currencies.ETHEREUM))
                 holder.fromSym.setBackgroundResource(R.color.colorEthereum);
-            }
 
             holder.fromSym.setText(currencyExchange.getFromSymbol());
-            holder.toSym.setText(currencyExchange.getToSymbol());
             holder.rateTextView.setText(currencyExchange.getPrice());
             holder.marketTextView.setText(currencyExchange.getMarket());
             holder.updatedTextView.setText(currencyExchange.getUpdated());
@@ -179,19 +262,20 @@ public class CryptoCardsActivityFragment extends Fragment implements CrytoCardsC
             return currencyExchanges.get(position);
         }
 
-        public void replaceData(Map<String, CurrencyExchange> currencyExchanges){
+        public void addCurrencyExchange(String from, Map<Integer, CurrencyExchange> currencyExchange){
+            this.coinType = from;
             this.currencyExchanges = currencyExchanges;
             notifyDataSetChanged();
         }
+
+        public Map<Integer,CurrencyExchange> getAdapterData(){ return this.currencyExchanges; }
+
 
         class ViewHolder extends RecyclerView.ViewHolder {
             private OnExchangeItemClickedListener itemClickedListener;
 
             @BindView(R.id.tv_from_symbol)
             TextView fromSym;
-
-            @BindView(R.id.tv_to_symbol)
-            TextView toSym;
 
             @BindView(R.id.tv_to_world_rate)
             TextView rateTextView;

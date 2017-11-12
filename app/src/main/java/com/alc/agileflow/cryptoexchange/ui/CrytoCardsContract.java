@@ -18,13 +18,13 @@ public class CrytoCardsContract {
 
         void showErrorMessage(String err);
 
-        void setExchangeCards(Map<String, CurrencyExchange> currencyExchanges);
+        void setExchangeRateData(String from, Map<String, CurrencyExchange> currencyExchanges);
 
         void openExchangeConverter(CurrencyExchange currencyExchange);
     }
 
     interface UserActionListener{
-        void getExchangeCard(String from, String to);
+        void getExchangeData(String from, String to);
 
         void showExchangeConverter(CurrencyExchange currencyExchange);
     }

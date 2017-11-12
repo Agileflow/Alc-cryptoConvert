@@ -20,13 +20,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CryptoCompareService {
 
-    public interface onCryptoExchangeRatesLoadedListener {
-        void onCryptoExchangeRatesLoaded(List<ResponseData.ExchangeDisplay> cryptosRate);
+    public interface OnCryptoExchangeRatesLoadedListener {
+        void onCryptoExchangeRatesLoaded(ResponseData.ExchangeDisplay cryptosRate);
 
         void onCryptoExchangeRatesLoadFailure(String err);
     }
 
-    public static void getExchangeRate(String from, String to, final onCryptoExchangeRatesLoadedListener exchangeRatesLoadedListener) {
+    public static void getExchangeRate(String from, String to, final OnCryptoExchangeRatesLoadedListener exchangeRatesLoadedListener) {
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Parameter.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())

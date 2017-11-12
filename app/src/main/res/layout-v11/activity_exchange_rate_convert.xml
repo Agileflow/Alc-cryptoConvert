@@ -40,31 +40,29 @@
 
             <TextView
                 android:id="@+id/tv_crypto_sym"
-                android:layout_width="wrap_content"
+                android:layout_width="45dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center"
-                android:layout_marginTop="30dp"
-                android:contentDescription="@string/crypto_symbol"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:foregroundGravity="center_horizontal|center"
                 android:padding="10dp"
-                android:src="@android:color/background_light" />
+                android:src="@color/colorPrimaryDark"
+                android:textAlignment="center"
+                android:textColor="@color/cardview_light_background"
+                android:contentDescription="@string/crypto_symbol" />
 
             <TextView
                 android:id="@+id/tv_world_rate"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:padding="10dp" />
-
-            <Spinner
-                android:id="@+id/to_currency_select"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:entries="@array/world_currencies"
+                android:layout_weight="1"
+                android:foregroundGravity="center"
                 android:padding="10dp"
-                android:prompt="@string/world_cuurency_prompt" />
+                android:text="@string/world_currency_rate"
+                android:textAlignment="center"
+                android:textStyle="normal" />
 
             <EditText
                 android:id="@+id/convert_value_field"

@@ -38,12 +38,14 @@ public class Currencies {
     //public static final String CHILEAN_PESO = "CLP";
 
     // TSYMS for an easy concatenation to query
-    public static final String[] currencies = {
-            "AED","AUD","CAD","CHF",
-            "CNY","CZK","EUR","GBP",
-            "HKD","ILS","INR","JPY",
-            "MYR","NGN","NZD","RUB",
-            "SGD","TRY","USD","ZAR"
-            //,"CLP",
-    };
+//    public static final String[] currencies = {
+//            "AED","AUD","CAD","CHF",
+//            "CNY","CZK","EUR","GBP",
+//            "HKD","ILS","INR","JPY",
+//            "MYR","NGN","NZD","RUB",
+//            "SGD","TRY","USD","ZAR"
+//            //,"CLP",
+//    };
+
+        public static final String toCurrencies = "AED,AUD,CAD,CHF,CNY,CZK,EUR,GBP,HKD,ILS,INR,JPY,MYR,NGN,NZD,RUB,SGD,TRY,USD,ZAR";
 }

@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,10 +12,10 @@ import java.util.Map;
  */
 
 public class ResponseData {
-    
+
     @SerializedName("DISPLAY")
     private
-    List<ExchangeDisplay> ratesDisplay;
+    ExchangeDisplay ratesDisplay;
 
 
     public class ExchangeDisplay implements Serializable{
@@ -34,11 +33,9 @@ public class ResponseData {
         public BindExchange getETHRate(){ return this.ethRate; }
 
         public class BindExchange {
-            
-            private Map currencyRate;
-            
+
             @SerializedName(Currencies.NAIRA)
-            private 
+            private
             CurrencyExchange naira;
 
             @SerializedName(Currencies.US_DOLLAR)
@@ -116,37 +113,68 @@ public class ResponseData {
             @SerializedName(Currencies.UAE_DIHAM)
             private
             CurrencyExchange aed;
-            
-            
-            BindExchange(){
-                
-                currencyRate = new HashMap<String, BindExchange>();
-                
-                currencyRate.put(Currencies.NAIRA, this.naira);
-                currencyRate.put(Currencies.US_DOLLAR, this.usd);
-                currencyRate.put(Currencies.BRITISH_POUND, this.gbp);
-                currencyRate.put(Currencies.EURO, this.euro);
-                currencyRate.put(Currencies.CANADIAN_DOLLA, this.cad);
-                currencyRate.put(Currencies.AUSTRALIAN_DOLLAR, this.aud);
-                currencyRate.put(Currencies.CHINESE_RENMINBI, this.cny);
-                currencyRate.put(Currencies.CZECH_KORUNA, this.czk);
-                currencyRate.put(Currencies.HONG_KONG_DOLLAR, this.hkd);
-                currencyRate.put(Currencies.INDIAN_RUPEE, this.inr);
-                currencyRate.put(Currencies.ISREALI_NEW_SHEKEL, this.isl);
-                currencyRate.put(Currencies.JAPANESE_YEN, this.jpy);
-                currencyRate.put(Currencies.MALAYSIAN_RINGIT, this.myr);
-                currencyRate.put(Currencies.NEW_ZEALAND_DOLLAR, this.nzd);
-                currencyRate.put(Currencies.RUSSIAN_RUBLE, this.rub);
-                currencyRate.put(Currencies.SINGAPORE_DOLLAR, this.sgd);
-                currencyRate.put(Currencies.SOUTH_AFRICAN_RAND, this.zar);
-                currencyRate.put(Currencies.SWISS_FRANC, this.chf);
-                currencyRate.put(Currencies.TURKISH_LIRA, this.lira);
-                currencyRate.put(Currencies.UAE_DIHAM, this.aed);
+
+            @SerializedName(Currencies.BITCOIN)
+            private
+            CurrencyExchange btc;
+
+            @SerializedName(Currencies.ETHEREUM)
+            private
+            CurrencyExchange eth;
+
+            public Map<String, CurrencyExchange> getCurrencyRate(){
+
+                Map currencyRate = new HashMap<String, BindExchange>();
+
+                if(this.naira != null)
+                    currencyRate.put(Currencies.NAIRA, this.naira);
+                if(this.usd != null)
+                    currencyRate.put(Currencies.US_DOLLAR, this.usd);
+                if(this.gbp != null)
+                    currencyRate.put(Currencies.BRITISH_POUND, this.gbp);
+                if(this.euro != null)
+                    currencyRate.put(Currencies.EURO, this.euro);
+                if(this.cad != null)
+                    currencyRate.put(Currencies.CANADIAN_DOLLA, this.cad);
+                if(this.aud != null)
+                    currencyRate.put(Currencies.AUSTRALIAN_DOLLAR, this.aud);
+                if(this.cny != null)
+                    currencyRate.put(Currencies.CHINESE_RENMINBI, this.cny);
+                if(this.czk != null)
+                    currencyRate.put(Currencies.CZECH_KORUNA, this.czk);
+                if(this.hkd != null)
+                    currencyRate.put(Currencies.HONG_KONG_DOLLAR, this.hkd);
+                if(this.inr != null)
+                    currencyRate.put(Currencies.INDIAN_RUPEE, this.inr);
+                if(this.isl != null)
+                    currencyRate.put(Currencies.ISREALI_NEW_SHEKEL, this.isl);
+                if(this.jpy != null)
+                    currencyRate.put(Currencies.JAPANESE_YEN, this.jpy);
+                if(this.myr != null)
+                    currencyRate.put(Currencies.MALAYSIAN_RINGIT, this.myr);
+                if(this.nzd != null)
+                    currencyRate.put(Currencies.NEW_ZEALAND_DOLLAR, this.nzd);
+                if(this.rub != null)
+                    currencyRate.put(Currencies.RUSSIAN_RUBLE, this.rub);
+                if(this.sgd != null)
+                    currencyRate.put(Currencies.SINGAPORE_DOLLAR, this.sgd);
+                if(this.zar != null)
+                    currencyRate.put(Currencies.SOUTH_AFRICAN_RAND, this.zar);
+                if(this.chf != null)
+                    currencyRate.put(Currencies.SWISS_FRANC, this.chf);
+                if(this.lira != null)
+                    currencyRate.put(Currencies.TURKISH_LIRA, this.lira);
+                if(this.aed != null)
+                    currencyRate.put(Currencies.UAE_DIHAM, this.aed);
+                if(this.btc != null)
+                    currencyRate.put(Currencies.BITCOIN, this.btc);
+                if(this.eth != null)
+                    currencyRate.put(Currencies.ETHEREUM, this.eth);
+
+                return currencyRate;
             }
-            
-            public Map<String, CurrencyExchange> getcurrencyRate(){ return this.currencyRate; }
         }
     }
 
-    public List<ExchangeDisplay> getCryptosRate(){ return this.ratesDisplay; }
+    public ExchangeDisplay getCryptosRate(){ return this.ratesDisplay; }
 }

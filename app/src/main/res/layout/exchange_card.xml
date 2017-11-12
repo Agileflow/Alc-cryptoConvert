@@ -3,25 +3,16 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="130dp"
+    android:layout_height="150dp"
     android:orientation="vertical"
-    android:layout_width="170dp"
     app:cardCornerRadius="4dp"
-    app:cardElevation="4dp"
-    android:layout_height="180dp"
-    android:layout_marginBottom="20dp">
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/delete_card"
-            android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:background="@color/colorPrimaryDark"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme" />
 
         <TextView
             android:id="@+id/tv_from_symbol"
@@ -32,46 +23,31 @@
             android:contentDescription="@string/crypto_symbol"
             android:foregroundGravity="center_horizontal|center"
             android:padding="10dp"
-            android:src="@color/colorPrimaryDark" />
+            android:src="@color/colorPrimaryDark"
+            android:textAlignment="center"
+            android:textColor="@color/cardview_light_background" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="20dp">
-
-            <TextView
-                android:id="@+id/tv_to_symbol"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="2dp"
-                android:layout_weight="1"
-                android:contentDescription="@string/to_currency_symbol"
-                android:padding="10dp"
-                android:src="@color/cardview_light_background" />
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_to_world_rate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:foregroundGravity="center"
-                android:gravity="center_vertical"
-                android:padding="5dp"
-                android:text="@string/world_currency_rate" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="vertical">
+                android:padding="10dp"
+                android:text="@string/world_currency_rate"
+                android:textAlignment="center"
+                android:textStyle="normal" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -79,14 +55,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="5dp" />
+                    android:padding="5dp"
+                    android:textAlignment="viewStart"
+                    android:textSize="6sp" />
 
                 <TextView
                     android:id="@+id/tv_updated"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="5dp" />
+                    android:padding="5dp"
+                    android:textAlignment="viewEnd"
+                    android:textSize="6sp" />
             </LinearLayout>
         </LinearLayout>
 

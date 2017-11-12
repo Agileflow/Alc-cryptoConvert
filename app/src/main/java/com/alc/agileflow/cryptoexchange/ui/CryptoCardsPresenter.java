@@ -5,8 +5,6 @@ import com.alc.agileflow.cryptoexchange.remote.models.ResponseData;
 import com.alc.agileflow.cryptoexchange.service.CryptoCompareService;
 import com.alc.agileflow.cryptoexchange.utils.Currencies;
 
-import java.util.List;
-
 /**
  * Created by dell pc on 11/4/2017.
  */
@@ -14,19 +12,17 @@ import java.util.List;
 public class CryptoCardsPresenter implements CrytoCardsContract.UserActionListener{
 
     private CrytoCardsContract.View cardsView;
-    private String from;
 
     CryptoCardsPresenter(CrytoCardsContract.View cardsView){
         this.cardsView = cardsView;
     }
 
     @Override
-    public void getExchangeCard(String from, String to) {
-        this.from = from;
+    public void getExchangeData(String from, String to) {
         if(cardsView.checkNetworkConnection())
             CryptoCompareService.getExchangeRate(from,to,loadedListener);
         else
-            cardsView.showErrorMessage("Check internet connection!");
+            cardsView.showErrorMessage("Check Internet Connectivity!");
     }
 
     @Override
@@ -34,13 +30,13 @@ public class CryptoCardsPresenter implements CrytoCardsContract.UserActionListen
         cardsView.openExchangeConverter(currencyExchange);
     }
 
-    private CryptoCompareService.onCryptoExchangeRatesLoadedListener loadedListener = new CryptoCompareService.onCryptoExchangeRatesLoadedListener() {
+    private CryptoCompareService.OnCryptoExchangeRatesLoadedListener loadedListener = new CryptoCompareService.OnCryptoExchangeRatesLoadedListener() {
         @Override
-        public void onCryptoExchangeRatesLoaded(List<ResponseData.ExchangeDisplay> cryptosRate) {
-            if (from.equalsIgnoreCase(Currencies.BITCOIN))
-                cardsView.setExchangeCards(cryptosRate.get(0).getBTCRate().getcurrencyRate());
-            else if(from.equalsIgnoreCase(Currencies.ETHEREUM))
-                cardsView.setExchangeCards(cryptosRate.get(0).getETHRate().getcurrencyRate());
+        public void onCryptoExchangeRatesLoaded(ResponseData.ExchangeDisplay cryptosRate) {
+            if (cryptosRate.getBTCRate().getCurrencyRate() != null)
+                cardsView.setExchangeRateData(Currencies.BITCOIN, cryptosRate.getBTCRate().getCurrencyRate());
+            if(cryptosRate.getETHRate().getCurrencyRate() != null)
+                cardsView.setExchangeRateData(Currencies.ETHEREUM, cryptosRate.getETHRate().getCurrencyRate());
         }
 
         @Override

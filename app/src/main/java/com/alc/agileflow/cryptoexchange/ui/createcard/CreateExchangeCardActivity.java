@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.alc.agileflow.cryptoexchange.R;
 import com.alc.agileflow.cryptoexchange.ui.CryptoCardsActivity;
+import com.alc.agileflow.cryptoexchange.utils.Helper;
 
 public class CreateExchangeCardActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -27,6 +28,12 @@ public class CreateExchangeCardActivity extends AppCompatActivity implements Ada
         addListenerOnCreateButton();
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        finish();
+    }
+
     private void addListenerOnSpinnersItemSelection() {
         fromSpinner = (Spinner) findViewById(R.id.from_symbol_select);
         toSpinner = (Spinner) findViewById(R.id.to_symbol_select);
@@ -41,15 +48,17 @@ public class CreateExchangeCardActivity extends AppCompatActivity implements Ada
             @Override
             public void onClick(View view) {
                 if (!(String.valueOf(fromSpinner.getSelectedItem()).isEmpty()) && !(String.valueOf(toSpinner.getSelectedItem()).isEmpty())) {
-                    String selection[] = {String.valueOf(fromSpinner.getSelectedItem()), String.valueOf(toSpinner.getSelectedItem())};
+                    if(!(String.valueOf(fromSpinner.getSelectedItem()).equalsIgnoreCase(String.valueOf(toSpinner.getSelectedItem())))) {
+                        String selection[] = {String.valueOf(fromSpinner.getSelectedItem()), String.valueOf(toSpinner.getSelectedItem())};
 
-                    Intent cardIntent = new Intent(getBaseContext(), CryptoCardsActivity.class);
-                    cardIntent.putExtra(SELECTED, selection);
-                    startActivity(cardIntent);
+                        Intent cardIntent = new Intent(getBaseContext(), CryptoCardsActivity.class);
+                        cardIntent.putExtra(SELECTED, selection);
+                        startActivity(cardIntent);
+                    }else{
+                        Helper.showToast(getBaseContext(),"Exchange is only possible between unlike currencies!");
+                    }
                 }else {
-                    Toast.makeText(getBaseContext(),
-                            "Select both choice currencies",
-                            Toast.LENGTH_SHORT).show();
+                    Helper.showToast(getBaseContext(),"Select both choice currencies!");
                 }
             }
         });

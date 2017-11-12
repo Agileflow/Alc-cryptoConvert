@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="45dp"
     android:orientation="vertical"
+    android:padding="20dp"
     tools:context="com.alc.agileflow.cryptoexchange.ui.CryptoCardsActivityFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_exchange_cards"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fadeScrollbars="true"
-        android:padding="20dp" />
+        android:fadeScrollbars="true" />
 
 
 </LinearLayout>

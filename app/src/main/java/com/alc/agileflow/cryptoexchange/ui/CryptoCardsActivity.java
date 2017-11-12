@@ -37,12 +37,6 @@ public class CryptoCardsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();  // Always call the superclass method first
-
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_crypto_cards, menu);
@@ -64,9 +58,9 @@ public class CryptoCardsActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.calculator) {
-            Intent calculatorIntent = new Intent(this,ExchangeRateConvertActivity.class);
-            startActivity(calculatorIntent);
+        if (id == R.id.create_card) {
+            Intent createCardIntent = new Intent(this,CreateExchangeCardActivity.class);
+            startActivity(createCardIntent);
             return true;
         }
         if (id == R.id.action_settings) {

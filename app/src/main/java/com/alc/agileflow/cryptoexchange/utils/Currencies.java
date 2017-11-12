@@ -47,5 +47,5 @@ public class Currencies {
 //            //,"CLP",
 //    };
 
-        public static final String toCurrencies = "AED,AUD,CAD,CHF,CNY,CZK,EUR,GBP,HKD,ILS,INR,JPY,MYR,NGN,NZD,RUB,SGD,TRY,USD,ZAR";
+        public static final String toCurrencies = "BTC,ETH,AED,AUD,CAD,CHF,CNY,CZK,EUR,GBP,HKD,ILS,INR,JPY,MYR,NGN,NZD,RUB,SGD,TRY,USD,ZAR";
 }

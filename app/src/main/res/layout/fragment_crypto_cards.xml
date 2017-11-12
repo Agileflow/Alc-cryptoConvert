@@ -13,7 +13,8 @@
         android:id="@+id/rv_exchange_cards"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fadeScrollbars="true" />
+        android:fadeScrollbars="true"
+        android:padding="10dp" />
 
 
 </LinearLayout>

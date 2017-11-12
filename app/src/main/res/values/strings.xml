@@ -17,6 +17,8 @@
 
     <string-array name="world_currencies">
         <item></item>
+        <item>BTC</item>
+        <item>ETH</item>
         <item>NGN</item>
         <item>USD</item>
         <item>GBP</item>
@@ -46,5 +48,6 @@
     </string-array>
 
     <string name="value_to_convert">Enter value</string>
+    <string name="title_activity_exchange_rate_convert">ExchangeRateConvertActivity</string>
 
 </resources>
